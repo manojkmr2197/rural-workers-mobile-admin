@@ -18,8 +18,8 @@ public class AdViewHolder extends RecyclerView.ViewHolder {
     public AdViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        button =(Button)itemView.findViewById(R.id.ad_edit);
-        image =(ImageView) itemView.findViewById(R.id.ad_image_view);
+        button =(Button)itemView.findViewById(R.id.ad_item_edit);
+        image =(ImageView) itemView.findViewById(R.id.ad_item_image);
 
     }
 }

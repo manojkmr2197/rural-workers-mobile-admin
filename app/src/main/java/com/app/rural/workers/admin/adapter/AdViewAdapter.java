@@ -19,13 +19,13 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdViewAdapater extends RecyclerView.Adapter<AdViewHolder> {
+public class AdViewAdapter extends RecyclerView.Adapter<AdViewHolder> {
 
     Context context;
     List<AdModel> contentList = new ArrayList<>();
     ClickListener clickListener;
 
-    public AdViewAdapater(Context context, List<AdModel> contentList, ClickListener clickListener) {
+    public AdViewAdapter(Context context, List<AdModel> contentList, ClickListener clickListener) {
         this.contentList = contentList;
         this.context = context;
         this.clickListener = clickListener;
@@ -34,7 +34,6 @@ public class AdViewAdapater extends RecyclerView.Adapter<AdViewHolder> {
     @NonNull
     @Override
     public AdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the layout
         return new AdViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ad_item_design, parent, false));
     }
 
@@ -46,7 +45,6 @@ public class AdViewAdapater extends RecyclerView.Adapter<AdViewHolder> {
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ITEM NO",contentList.get(index).getFileName());
                 clickListener.click(index);
             }
         });

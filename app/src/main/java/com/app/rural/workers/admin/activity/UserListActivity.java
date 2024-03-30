@@ -13,4 +13,11 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
+    }
 }

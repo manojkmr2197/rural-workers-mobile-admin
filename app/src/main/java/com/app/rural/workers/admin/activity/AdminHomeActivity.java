@@ -51,6 +51,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent i =null;
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 switch (item.getItemId()){
                     case R.id.nav_workers:
                         i = new Intent(AdminHomeActivity.this, WorkerListActivity.class);
@@ -83,11 +84,11 @@ public class AdminHomeActivity extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
                         break;
                     case R.id.nav_proof_type:
-
+                        i = new Intent(AdminHomeActivity.this, ProofTypeActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
                         break;
                 }
-
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
         });

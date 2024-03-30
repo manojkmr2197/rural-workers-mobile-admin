@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.rural.workers.admin.R;
-import com.app.rural.workers.admin.adapter.AdViewAdapater;
+import com.app.rural.workers.admin.adapter.AdViewAdapter;
 import com.app.rural.workers.admin.listener.ClickListener;
 import com.app.rural.workers.admin.model.AdModel;
 
@@ -55,7 +55,7 @@ public class AdvertisementActivity extends AppCompatActivity implements View.OnC
             }
         };
 
-        AdViewAdapater adapter = new AdViewAdapater(context,itemList,listener);
+        AdViewAdapter adapter = new AdViewAdapter(context,itemList,listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
@@ -63,7 +63,8 @@ public class AdvertisementActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onBackPressed()
     {
-        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left);
     }
 
     @Override
