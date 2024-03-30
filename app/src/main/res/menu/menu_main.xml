@@ -1,10 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.app.rural.workers.admin.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_workers"
+            android:icon="@drawable/ic_baseline_clear_24"
+
+            android:title="Workers" />
+        <item
+            android:id="@+id/nav_users"
+            android:icon="@drawable/ic_baseline_clear_24"
+            android:title="Users" />
+
+        <item
+            android:id="@+id/nav_ad"
+            android:icon="@drawable/ic_baseline_clear_24"
+            android:title="Advertisement" />
+    </group>
+
+    <item android:title="Environments">
+        <menu>
+            <item
+                android:id="@+id/nav_city"
+                android:icon="@drawable/ic_baseline_clear_24"
+                android:title="City" />
+            <item
+                android:id="@+id/nav_area"
+                android:icon="@drawable/ic_baseline_clear_24"
+                android:title="Area" />
+            <item
+                android:id="@+id/nav_job"
+                android:icon="@drawable/ic_baseline_clear_24"
+                android:title="Job" />
+            <item
+                android:id="@+id/nav_proof_type"
+                android:icon="@drawable/ic_baseline_clear_24"
+                android:title="Proof Types" />
+        </menu>
+    </item>
+
 </menu>
