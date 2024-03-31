@@ -1,5 +1,6 @@
 package com.app.rural.workers.admin.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +19,34 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.app.rural.workers.admin.R;
+import com.app.rural.workers.admin.utils.Utility;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.navigation.NavigationView;
 
 public class AdminHomeActivity extends AppCompatActivity {
+
+    AdView adView = null;
+    public InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
+
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -31,6 +54,19 @@ public class AdminHomeActivity extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.app_color));
         }
+
+        adView = findViewById(R.id.home_google_adView);
+        Utility.bannerADLoading(adView);
+
+
+        Button interstitial =(Button) findViewById(R.id.home_google_inter);
+
+        interstitial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //loadAd(AdminHomeActivity.this);
+            }
+        });
 
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         TextView textView = (TextView) findViewById(R.id.home_nav_text_view);
@@ -93,6 +129,63 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
     }
+
+//    public void loadAd(Context context) {
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        InterstitialAd.load(
+//                context,
+//                context.getString(R.string.interstitial_ad_unit_id),
+//                adRequest,
+//                new InterstitialAdLoadCallback() {
+//                    @Override
+//                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+//                        // The mInterstitialAd reference will be null until
+//                        // an ad is loaded.
+//                        mInterstitialAd = interstitialAd;
+//                        Toast.makeText(context, "onAdLoaded()", Toast.LENGTH_SHORT).show();
+//                        interstitialAd.setFullScreenContentCallback(
+//                                new FullScreenContentCallback() {
+//                                    @Override
+//                                    public void onAdDismissedFullScreenContent() {
+//                                        // Called when fullscreen content is dismissed.
+//                                        // Make sure to set your reference to null so you don't
+//                                        // show it a second time.
+//                                        AdminHomeActivity.this.mInterstitialAd = null;
+//                                        Toast.makeText(context, "The ad was dismissed.", Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+//                                        // Called when fullscreen content failed to show.
+//                                        // Make sure to set your reference to null so you don't
+//                                        // show it a second time.
+//                                        AdminHomeActivity.this.mInterstitialAd = null;
+//                                        Toast.makeText(context, "The ad failed to show.", Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                    @Override
+//                                    public void onAdShowedFullScreenContent() {
+//                                        // Called when fullscreen content is shown.
+//                                        Toast.makeText(context, "The ad was shown.", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                    }
+//
+//                    @Override
+//                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+//                        // Handle the error
+//                        mInterstitialAd = null;
+//                        String error =
+//                                String.format(
+//                                        "domain: %s, code: %d, message: %s",
+//                                        loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
+//                        Toast.makeText(
+//                                AdminHomeActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT)
+//                                .show();
+//                    }
+//                });
+//    }
 
     @Override
     public void onBackPressed() {

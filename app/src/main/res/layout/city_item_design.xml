@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_margin="3dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/city_item_name_english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trichy" />
+
+        <TextView
+            android:id="@+id/city_item_name_tamil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="திருச்சி" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/city_item_status"
+        android:layout_width="12dp"
+        android:layout_height="12dp" />
+
+    <Button
+        android:id="@+id/city_item_edit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/ic_baseline_edit_24" />
+
+</LinearLayout>

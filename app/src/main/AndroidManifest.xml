@@ -3,6 +3,8 @@
     package="com.app.rural.workers.admin">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RuralWorkersAdmin">
-        <activity android:name=".activity.ProofTypeActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/AD_APPLICATION_ID"/>
+
+        <activity android:name=".activity.ProofTypeActivity"/>
         <activity android:name=".activity.AdvertisementActivity" />
         <activity android:name=".activity.WorkerListActivity" />
         <activity android:name=".activity.UserListActivity" />
