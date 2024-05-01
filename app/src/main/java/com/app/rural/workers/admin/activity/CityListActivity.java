@@ -1,13 +1,14 @@
 package com.app.rural.workers.admin.activity;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.rural.workers.admin.R;
 import com.app.rural.workers.admin.adapter.CityViewAdapter;
+import com.app.rural.workers.admin.listener.API;
 import com.app.rural.workers.admin.listener.ClickListener;
 import com.app.rural.workers.admin.model.CityModel;
+import com.app.rural.workers.admin.utils.RetrofitClient;
+import com.app.rural.workers.admin.utils.SingleTon;
+import com.app.rural.workers.admin.utils.Utility;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,13 +32,34 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CityListActivity extends AppCompatActivity implements View.OnClickListener {
+
+    FrameLayout data_fl,no_data_fl;
+    Context context;
+    Activity activity;
+
+    API api;
+
+    List<CityModel> itemList = new ArrayList<>();
+
+    CityViewAdapter adapter;
+    RecyclerView recyclerView;
+    ClickListener listener;
+
+    AdView no_data_adView,progress_adView;
+
+    BottomSheetDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_list);
-        Context context = CityListActivity.this;
+        context = CityListActivity.this;
+        activity = CityListActivity.this;
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -41,30 +68,111 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
             window.setStatusBarColor(this.getResources().getColor(R.color.app_color));
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.city_recyclerView);
+        no_data_fl = (FrameLayout) findViewById(R.id.city_no_data_ll);
+        data_fl = (FrameLayout) findViewById(R.id.city_data_ll);
+
+        no_data_adView = (AdView) findViewById(R.id.city_empty_google_adView);
+
+        recyclerView = (RecyclerView) findViewById(R.id.city_recyclerView);
         TextView back = (TextView) findViewById(R.id.city_back);
         back.setOnClickListener(this);
 
         FloatingActionButton add_fab = (FloatingActionButton) findViewById(R.id.city_add_fab);
         add_fab.setOnClickListener(this);
 
-        List<CityModel> itemList = new ArrayList<>();
-        itemList.add(new CityModel(1, "Trichy1", "திருச்சி", "Y"));
-        itemList.add(new CityModel(2, "Trichy2", "திருச்சி", "Y"));
-        itemList.add(new CityModel(3, "Trichy3", "திருச்சி", "N"));
-        itemList.add(new CityModel(4, "Trichy4", "திருச்சி", "Y"));
-
-        ClickListener listener = new ClickListener() {
+        listener = new ClickListener() {
             @Override
             public void click(int index) {
                 Toast.makeText(context, "clicked item main class " + index, Toast.LENGTH_LONG).show();
                 createDialogBox(context, itemList.get(index));
             }
         };
+        createProgressDialog();
+        checkInternet();
 
-        CityViewAdapter adapter = new CityViewAdapter(context, itemList, listener);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+    }
+
+    private void checkInternet() {
+        if(SingleTon.isNetworkConnected(activity)){
+            no_data_fl.setVisibility(View.GONE);
+            data_fl.setVisibility(View.VISIBLE);
+            callApiData();
+        }else{
+            no_data_fl.setVisibility(View.VISIBLE);
+            data_fl.setVisibility(View.GONE);
+            createNoInternetDialog();
+        }
+
+    }
+
+    private void callApiData() {
+        api = new RetrofitClient().getClient().create(API.class);
+
+        Call<List<CityModel>> call = api.getCityAllList();
+
+        progressDialog.show();
+        Utility.bannerADLoading(progress_adView);
+
+        call.enqueue(new Callback<List<CityModel>>() {
+            @Override
+            public void onResponse(Call<List<CityModel>> call, Response<List<CityModel>> response) {
+                progressDialog.dismiss();
+                try {
+                    itemList.clear();
+                    itemList = response.body();
+                    if (itemList.isEmpty()) {
+                        data_fl.setVisibility(View.GONE);
+                        no_data_fl.setVisibility(View.VISIBLE);
+                        Utility.bannerADLoading(no_data_adView);
+                    } else {
+                        data_fl.setVisibility(View.VISIBLE);
+                        no_data_fl.setVisibility(View.GONE);
+                        adapter = new CityViewAdapter(context, itemList, listener);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CityModel>> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(CityListActivity.this, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                data_fl.setVisibility(View.GONE);
+                no_data_fl.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void createProgressDialog() {
+        progressDialog = new BottomSheetDialog(context);
+        progressDialog.setContentView(R.layout.dialog_progress_view);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        progress_adView = (AdView) progressDialog.findViewById(R.id.progress_google_adView);
+
+    }
+
+    private void createNoInternetDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(context);
+        dialog.setContentView(R.layout.dialog_no_internet_view);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        TextView retry = (TextView) dialog.findViewById(R.id.no_internet_retry);
+
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkInternet();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override
@@ -96,8 +204,8 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
         Button submit = (Button) dialog.findViewById(R.id.city_add_submit);
         TextView close = (TextView) dialog.findViewById(R.id.city_add_close);
         if (cityModel != null) {
-            englishName.setText(cityModel.getNameEnglish());
-            tamilName.setText(cityModel.getNameTamil());
+            englishName.setText(cityModel.getCityNameEnglish());
+            tamilName.setText(cityModel.getCityNameTamil());
         }
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +217,7 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 if (cityModel != null) {
-                    Toast.makeText(CityListActivity.this, "Update city ID - " + cityModel.getId(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CityListActivity.this, "Update city ID - " + cityModel.getCityId(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(CityListActivity.this, "New city - " + englishName.getText() + "-" + tamilName.getText(), Toast.LENGTH_LONG).show();
                 }

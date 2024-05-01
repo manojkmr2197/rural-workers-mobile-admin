@@ -2,45 +2,45 @@ package com.app.rural.workers.admin.model;
 
 public class CityModel {
 
-    int id;
-    String nameEnglish,nameTamil,status;
+    int cityId;
+    String cityNameEnglish,cityNameTamil,cityIsEnabled;
 
-    public CityModel(int id, String nameEnglish, String nameTamil, String status) {
-        this.id = id;
-        this.nameEnglish = nameEnglish;
-        this.nameTamil = nameTamil;
-        this.status = status;
+    public CityModel(int cityId, String cityNameEnglish, String cityNameTamil, String cityIsEnabled) {
+        this.cityId = cityId;
+        this.cityNameEnglish = cityNameEnglish;
+        this.cityNameTamil = cityNameTamil;
+        this.cityIsEnabled = cityIsEnabled;
     }
 
-    public int getId() {
-        return id;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
-    public String getNameEnglish() {
-        return nameEnglish;
+    public String getCityNameEnglish() {
+        return cityNameEnglish;
     }
 
-    public void setNameEnglish(String nameEnglish) {
-        this.nameEnglish = nameEnglish;
+    public void setCityNameEnglish(String cityNameEnglish) {
+        this.cityNameEnglish = cityNameEnglish;
     }
 
-    public String getNameTamil() {
-        return nameTamil;
+    public String getCityNameTamil() {
+        return cityNameTamil;
     }
 
-    public void setNameTamil(String nameTamil) {
-        this.nameTamil = nameTamil;
+    public void setCityNameTamil(String cityNameTamil) {
+        this.cityNameTamil = cityNameTamil;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCityIsEnabled() {
+        return cityIsEnabled;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCityIsEnabled(String cityIsEnabled) {
+        this.cityIsEnabled = cityIsEnabled;
     }
 }

@@ -63,6 +63,37 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/job_add_imageview"
+                android:src="@drawable/app_logo"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_marginStart="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/job_add_imagebt"
+                android:text="Upload Image"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/job_add_checkbox"
+            android:text="Enabled"
+            android:textColorHint="@color/app_color"/>
+
         <Button
             android:id="@+id/job_add_submit"
             android:layout_width="wrap_content"

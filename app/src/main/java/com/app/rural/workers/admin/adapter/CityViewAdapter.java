@@ -38,9 +38,9 @@ public class CityViewAdapter extends RecyclerView.Adapter<CityViewHolder> {
     public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
         int index = holder.getAdapterPosition();
 
-        holder.name_tamil.setText(contentList.get(index).getNameTamil());
-        holder.name_english.setText(contentList.get(index).getNameEnglish());
-        if("Y".equals(contentList.get(index).getStatus())){
+        holder.name_tamil.setText(contentList.get(index).getCityNameTamil());
+        holder.name_english.setText(contentList.get(index).getCityNameEnglish());
+        if("Y".equals(contentList.get(index).getCityIsEnabled())){
             holder.status.setBackgroundResource(R.drawable.ic_baseline_lens_active);
         }else{
             holder.status.setBackgroundResource(R.drawable.ic_baseline_lens_not_active);
