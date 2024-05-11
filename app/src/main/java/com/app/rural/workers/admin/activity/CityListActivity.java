@@ -23,8 +23,6 @@ import com.app.rural.workers.admin.listener.ClickListener;
 import com.app.rural.workers.admin.model.CityModel;
 import com.app.rural.workers.admin.utils.RetrofitClient;
 import com.app.rural.workers.admin.utils.SingleTon;
-import com.app.rural.workers.admin.utils.Utility;
-import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -50,7 +48,7 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
     RecyclerView recyclerView;
     ClickListener listener;
 
-    AdView no_data_adView,progress_adView;
+
 
     BottomSheetDialog progressDialog;
 
@@ -70,8 +68,6 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
 
         no_data_fl = (FrameLayout) findViewById(R.id.city_no_data_ll);
         data_fl = (FrameLayout) findViewById(R.id.city_data_ll);
-
-        no_data_adView = (AdView) findViewById(R.id.city_empty_google_adView);
 
         recyclerView = (RecyclerView) findViewById(R.id.city_recyclerView);
         TextView back = (TextView) findViewById(R.id.city_back);
@@ -112,7 +108,6 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
         Call<List<CityModel>> call = api.getCityAllList();
 
         progressDialog.show();
-        Utility.bannerADLoading(progress_adView);
 
         call.enqueue(new Callback<List<CityModel>>() {
             @Override
@@ -124,7 +119,6 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
                     if (itemList.isEmpty()) {
                         data_fl.setVisibility(View.GONE);
                         no_data_fl.setVisibility(View.VISIBLE);
-                        Utility.bannerADLoading(no_data_adView);
                     } else {
                         data_fl.setVisibility(View.VISIBLE);
                         no_data_fl.setVisibility(View.GONE);
@@ -152,8 +146,6 @@ public class CityListActivity extends AppCompatActivity implements View.OnClickL
         progressDialog.setContentView(R.layout.dialog_progress_view);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        progress_adView = (AdView) progressDialog.findViewById(R.id.progress_google_adView);
 
     }
 

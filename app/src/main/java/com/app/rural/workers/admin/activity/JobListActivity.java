@@ -31,7 +31,7 @@ import com.app.rural.workers.admin.listener.ClickListener;
 import com.app.rural.workers.admin.model.JobModel;
 import com.app.rural.workers.admin.utils.RetrofitClient;
 import com.app.rural.workers.admin.utils.SingleTon;
-import com.google.android.gms.ads.AdRequest;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
